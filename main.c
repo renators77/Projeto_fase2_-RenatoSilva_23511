@@ -10,12 +10,12 @@
 int main(int argc, char const *argv[]) {
     
     job *jobList;
-    //processPlan *processPlanList;
+    processPlan *processPlanList;
 
     int opcao; 
     int idCont = 0;
-    //processList = inicializarProcessPlan();
-    
+    processList = inicializarProcessPlan();
+        
     jobList = inicializarJob();
 	verificarDadosNoFicheiro(jobList->op,&idCont,&(jobList->nOperacoes));
 
@@ -25,7 +25,7 @@ int main(int argc, char const *argv[]) {
         switch(opcao) {
             case 0: printf("terminado!!\n\n"); 
 					break;
-            case 1: inserirNovaOperacao(jobList->op,&idCont); 
+            case 1: inserirNovaOperacao(processPlanList-> todosJobs,jobList->op,&idCont); 
 					break;
             case 2: listaOperacoes(jobList->op,jobList->nOperacoes); 
 					break;

@@ -18,6 +18,7 @@
 //-------------------------------------------------------
 typedef struct operacao {
     int id;
+    int njob;
     int qttMaquinas;
     int *MaquinaTempo;
     struct operacao *next;
@@ -54,6 +55,9 @@ void determineTempoMaisCurto(operacao *op);
 void determineTempoMaisLongo(operacao *op);
 void determineTempoMedio(operacao *op);
 void guardarDados(operacao *op, int nOperacoes);
+void InserirJob (processPlan *pPlan, int *idJob);
+void RemoverJobOperacao (job **jobList);
+void EditarJob(operacao *operacaoLista);
 
 #pragma endregion
 
