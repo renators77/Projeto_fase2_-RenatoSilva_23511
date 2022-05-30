@@ -107,6 +107,7 @@ void menu(int *opcao) {
 
 void verificarDadosNoFicheiroTodos(processPlan *pPlan, operacao *op, int *idCont, int *nOperacoes) {
 	int jobInt = 0;
+	jobInt++;
 	FILE *fileProcessPlan = NULL;
 	do
 	{		
@@ -166,7 +167,7 @@ void verificarDadosNoFicheiroTodos(processPlan *pPlan, operacao *op, int *idCont
 					(*idCont)++;
 					(*op).id = (*idCont);
 					(*op).qttMaquinas = cont;
-					(*op).MaquinaTempo = (int *)malloc(sizeof(int[2][cont]));
+					(*op).MaquinaTempo = (int *)malloc(sizeof(int[2][cont]));//[x,y]
 
 					for(i=0; i < cont; i++) {
 						(*op).MaquinaTempo[0*cont + i] = arrayMaquina[i];
@@ -260,29 +261,31 @@ void inserirNovaOperacao(operacao *op, int *idCont, int *nJobs) {
 
 	printf("A qual Job pretende inserir uma operação: ");
 	fgets(input, sizeof(input), stdin); // 4
+
 	if(input > nJobs)
 	{
 		printf("Nao existe esse Job por favor insere outro valor \n\n");
 		system("pause");
-	}
 
-	operacao *opEmMem;
-	opEmMem = (operacao *)malloc(sizeof(operacao));
+	}else{
+
+		operacao *opEmMem;
+		opEmMem = (operacao *)malloc(sizeof(operacao));
 	
-	system("cls");
-	if(opEmMem==NULL) { 
-		printf("Nao existe mais espaço na memoria. Elimine uma das maquinas \n\n");
-		system("pause");
-	}
-	else {
 		system("cls");
-        (*opEmMem).next=NULL;
-		while(((*op).next) != NULL) {
-			op = (*op).next;
+		if(opEmMem==NULL) { 
+			printf("Nao existe mais espaço na memoria. Elimine uma das maquinas \n\n");
+			system("pause");
 		}
+		else {
+			system("cls");
+        	(*opEmMem).next=NULL;
+			while(((*op).next) != NULL) {
+			op = (*op).next;
+			}
 
-		(*idCont)++;
-		(*op).id = (*idCont);
+			(*idCont)++;
+			(*op).id = (*idCont);
 
 		
 			printf("Quantas maquinas deseja utilizar nesta nova operacao: ");
@@ -304,14 +307,16 @@ void inserirNovaOperacao(operacao *op, int *idCont, int *nJobs) {
 			}
 			
 		}
+	}
 		(*op).next = opEmMem;
 	}
 }
 
 void listaOperacoes(operacao *op, int nOperacoes) {
+	
 	int i = 0;
 	int j = 0;	
-
+	
 	system("cls");
 	if((*op).next==NULL)	{
 		puts("Nenhum");
@@ -353,14 +358,23 @@ void removeOperacao(job **jobList) {
 	
 	if(((*y).next)==NULL) { 
 		printf("A lista nao tem dados"); 
-	}
+	}else{
+
+	printf("A qual Job pretende inserir uma operação: ");
+	fgets(input, sizeof(input), stdin); // 4
+
+	if(input > nJobs)
+	{
+		printf("Nao existe esse Job por favor insere outro valor \n\n");
+		system("pause");
+
+	}else{
 	
-	else {
 		printf("Diga o id que deseja que seja retirado?\n");
 		if(fgets(elemRetirar, sizeof(elemRetirar), stdin)) {
 			elemRetirar[strcspn(elemRetirar, "\n")] = 0;
 			idRetirar = strtol(elemRetirar, NULL, 0);
-		}
+		}else{}
 
 		if(idRetirar == (*(*jobList)->op).id) {
 			system ("cls");
@@ -393,33 +407,34 @@ void removeOperacao(job **jobList) {
 				seguinte=(*opEmMem).next;
 			}
 			
-			if(idRetirar == (*opEmMem).id) {
-				(*anterior).next=seguinte;
-				system ("cls");
-				printf("A Operacao foi eliminada\n");
-				printf("Id - (%d)\n",(*opEmMem).id);
-				printf("Operacao - (");
-				for (j = 0; j < (*opEmMem).qttMaquinas; ++j) {
+				if(idRetirar == (*opEmMem).id) {
+					(*anterior).next=seguinte;
+					system ("cls");
+					printf("A Operacao foi eliminada\n");
+					printf("Id - (%d)\n",(*opEmMem).id);
+					printf("Operacao - (");
+					for (j = 0; j < (*opEmMem).qttMaquinas; ++j) {
 					if(((*opEmMem).qttMaquinas - j) == 1)
 						printf("%d",(*opEmMem).MaquinaTempo[0*(*opEmMem).qttMaquinas + j]);
 					else
 						printf("%d,",(*opEmMem).MaquinaTempo[0*(*opEmMem).qttMaquinas + j]);
-				}
-				printf(")\nTime - (");
-				for (j = 0; j < (*opEmMem).qttMaquinas; ++j) {
+					}
+					printf(")\nTime - (");
+					for (j = 0; j < (*opEmMem).qttMaquinas; ++j) {
 					if(((*opEmMem).qttMaquinas - j) == 1)
 						printf("%d",(*opEmMem).MaquinaTempo[1*(*opEmMem).qttMaquinas + j]);
 					else
 						printf("%d,",(*opEmMem).MaquinaTempo[1*(*opEmMem).qttMaquinas + j]);
+					}
+					printf(")\n");
+					system("pause");
+					free(opEmMem);
 				}
-				printf(")\n");
-				system("pause");
-				free(opEmMem);
-			}
-			else {
-				system("cls"); 
-				printf("A operacao com o id %s foi eliminada da lista", elemRetirar);
-			}
+				else {
+					system("cls"); 
+					printf("A operacao com o id %s foi eliminada da lista", elemRetirar);
+				}
+			}	
 		}
 	}
 }
@@ -437,6 +452,14 @@ void editarOperacao(operacao *operacaoLista) {
 		printf("A lista nao tem dados"); 
 	}
 	else {
+		
+		if(input > nJobs)
+	{
+		printf("Nao existe esse Job por favor insere outro valor \n\n");
+		system("pause");
+
+	}else{
+
 		printf("Diga o id da operacao que deseja editar?\n");
 		if(fgets(elemEditar, sizeof(elemEditar), stdin)) {
 			elemEditar[strcspn(elemEditar, "\n")] = 0;
@@ -535,6 +558,7 @@ void editarOperacao(operacao *operacaoLista) {
 				printf("A operacao com o id: %s nao existe na lista", elemEditar);
 			}
 		}
+	}
 	}
 }
 
@@ -912,6 +936,27 @@ void EditarJob(operacao *operacaoLista){
 			}
 		}
 	}
+}
+
+void eliminarJob(job *jobs, int nJobs){
+
+int jobInt;
+
+	printf("Qual job pretende eliminar: ");
+	fgets(jobInt, sizeof(jobInt), stdin); // 4
+
+	if(jobInt > nJobs){
+		printf("O valor inserido não existe");
+		system("pause");
+	}else{
+
+		FILE* f=fopen("ProcessPlan" + jobInt + ".txt", "w");
+
+   		fclose(f);
+
+   		return 0;
+	}
+	
 }
 
 void guardarTodosDados(job *jobs, int nJobs,operacao *op, int nOperacoes) {
