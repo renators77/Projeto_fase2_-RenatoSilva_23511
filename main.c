@@ -7,7 +7,7 @@
 #include "header.h"
 #include "functions.c"
 
-int main(int argc, char const *argv[]) {
+int main() {
     
     job *jobList;
     processPlan *processPlanList;
@@ -39,7 +39,11 @@ int main(int argc, char const *argv[]) {
 					break;
             case 7: determineTempoMedio(jobList->op);
             		break;
-            case 8: guardarDados(jobList->op,jobList->nOperacoes); 
+            case 8: guardarTodosDados(job *jobs, int nJobs,operacao *op, int nOperacoes); 
+					break;
+            case 9: InserirJob (processPlan *pPlan, int *idJob); 
+					break;
+            case 10: eliminarJob(job *jobs, int nJobs); 
 					break;
         }
     }while(opcao != 0);
